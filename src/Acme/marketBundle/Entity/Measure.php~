@@ -1,0 +1,73 @@
+<?php
+
+namespace Acme\marketBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Measure
+ *
+ * @ORM\Table(name="Measure")
+ * @ORM\Entity
+ */
+class Measure
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idMeasure", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $idmeasure;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateMeasure", type="datetime", nullable=false)
+     */
+    private $datemeasure;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="value", type="float", nullable=false)
+     */
+    private $value;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateUpdated", type="datetime", nullable=true)
+     */
+    private $dateupdated;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateCreated", type="datetime", nullable=true)
+     */
+    private $datecreated;
+
+    /**
+     * @var \Acme\marketBundle\Entity\Brand
+     *
+     * @ORM\OneToOne(targetEntity="Acme\marketBundle\Entity\Brand")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Brand_idBrand", referencedColumnName="idBrand", unique=true)
+     * })
+     */
+    private $brandbrand;
+
+    /**
+     * @var \Acme\marketBundle\Entity\Town
+     *
+     * @ORM\OneToOne(targetEntity="Acme\marketBundle\Entity\Town")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Town_idTown", referencedColumnName="idTown", unique=true)
+     * })
+     */
+    private $towntown;
+
+
+}

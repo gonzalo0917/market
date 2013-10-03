@@ -1,0 +1,4 @@
+acmemarket:
+    resource: "@AcmemarketBundle/Resources/config/routing.yml"
+    prefix:   /
+

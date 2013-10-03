@@ -1,0 +1,53 @@
+<?php
+
+namespace Acme\marketBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Brand
+ *
+ * @ORM\Table(name="Brand")
+ * @ORM\Entity
+ */
+class Brand
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idBrand", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idbrand;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateUpdated", type="datetime", nullable=true)
+     */
+    private $dateupdated;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateCreated", type="datetime", nullable=true)
+     */
+    private $datecreated;
+
+
+}

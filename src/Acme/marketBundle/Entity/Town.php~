@@ -1,0 +1,46 @@
+<?php
+
+namespace Acme\marketBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Town
+ *
+ * @ORM\Table(name="Town")
+ * @ORM\Entity
+ */
+class Town
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="idTown", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idtown;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateUpdated", type="datetime", nullable=true)
+     */
+    private $dateupdated;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="dateCreated", type="datetime", nullable=true)
+     */
+    private $datecreated;
+
+
+}
