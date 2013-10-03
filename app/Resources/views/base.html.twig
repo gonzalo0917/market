@@ -9,6 +9,12 @@
         padding-top: 60px;
       }
     </style>
+    {% block javascripts %}
+      <script src="{{ asset('/bundles/acmemarket/js/jquery.min.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('/bundles/acmemarket/js/underscore.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('/bundles/acmemarket/js/backbone.js') }}" type="text/javascript"></script>
+      <script src="{{ asset('/bundles/acmemarket/js/app.js') }}" type="text/javascript"></script>
+    {% endblock %}
   </head>
   <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
