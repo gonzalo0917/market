@@ -1,3 +1,9 @@
 acmemarket_homepage:
     pattern:  /home/
     defaults: { _controller: AcmemarketBundle:Default:index }
+acmemarket_uploadFile:
+    pattern:  /home/upload
+    defaults: { _controller: AcmemarketBundle:Default:uploadFile }
+acmemarket_setData:
+    pattern:  /home/setdata
+    defaults: { _controller: AcmemarketBundle:Default:setData }
