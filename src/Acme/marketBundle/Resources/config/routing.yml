@@ -1,9 +1,15 @@
 acmemarket_homepage:
-    pattern:  /home/
-    defaults: { _controller: AcmemarketBundle:Default:index }
+  pattern:  /home/
+  defaults: { _controller: AcmemarketBundle:Default:index }
 acmemarket_uploadFile:
-    pattern:  /home/upload
-    defaults: { _controller: AcmemarketBundle:Default:uploadFile }
+  pattern:  /home/upload
+  defaults: { _controller: AcmemarketBundle:Default:uploadFile }
 acmemarket_setData:
-    pattern:  /home/setdata
-    defaults: { _controller: AcmemarketBundle:Default:setData }
+  pattern:  /home/setdata
+  defaults: { _controller: AcmemarketBundle:Default:setData }
+acmemarket_readData:
+  pattern:  /home/read
+  defaults: { _controller: AcmemarketBundle:Default:readDAta }
+acmemarket_updateData:
+  pattern:  /home/update
+  defaults: { _controller: AcmemarketBundle:Default:updateDAta }

@@ -3,8 +3,10 @@ define([
   'underscore',
   'backbone',
   'ajaxfileupload',
-  'text!templates/messageTemplate.html'
-  ], function($, _, Backbone, ajaxfileupload, messageTemplate) {
+  'views/chartView',
+  'text!templates/messageTemplate.html',
+  'text!templates/editTemplate.html'
+  ], function($, _, Backbone, ajaxfileupload, chartView, messageTemplate, editTemplate) {
 
   var App = Backbone.View.extend({
     existsFile:false,
@@ -12,11 +14,12 @@ define([
     el: $("#marketer-page"),
     events:{
       "click #marketer-btn-upload": "uploadFile",
-      "change #file": "validateFile"
+      "change #file": "validateFile",
+      "click #marketer-menu li > a": "xaction"
     },
     initialize: function() {
       //_.bindAll(this);
-      console.log( 'Wahoo!' );
+      //console.log( $('#marketer-menu li'));
     },
     validateFile: function( e ){
 
@@ -31,6 +34,22 @@ define([
       }
 
     },
+    xaction: function(e){
+      this.$el.find('#marketer-menu li[class*=active]').removeClass('active');
+      this.$el.find( e.currentTarget ).parent().addClass('active');
+      switch( this.$el.find(e.currentTarget).attr('xaction') ){
+        case 'edit':
+          var compiledHtml = _.template( editTemplate );
+          this.$el.find('#marketer-content').html( compiledHtml );
+          break;
+        case 'chart':
+          new chartView();
+          break;
+        default:
+          break;
+      }
+      
+    },
     uploadFile: function(e){
       var self =  this;
       if(this.existsFile){
@@ -42,10 +61,9 @@ define([
         data: {},
         success: function (data, status){ 
           var response = data.replace('</pre>','').replace('<pre>','');   
-          response = $.parseJSON( response );           
-          console.log(response);
+          response = $.parseJSON( response );
           var compiledHtml = _.template( messageTemplate, response );
-          self.$el.html( compiledHtml );
+          self.$el.find('#marketer-content').html( compiledHtml );
 
         },
         error: function (data, status){

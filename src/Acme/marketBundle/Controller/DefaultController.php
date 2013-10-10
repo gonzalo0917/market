@@ -5,40 +5,117 @@ namespace Acme\marketBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Acme\marketBundle\Entity\Measure;
+use Acme\marketBundle\Entity\Brand;
+use Acme\marketBundle\Entity\Town;
 
 class DefaultController extends Controller
 {
 
   protected $upload_dir = '/../../../../web/bundles/acmemarket/tmp/';
-  protected $filename = "setData.csv";
+  protected $filename = "analisis.csv";
 
   public function indexAction()
   {
       return $this->render('AcmemarketBundle:Default:index.html.twig');
   }
   
-  public function setDataAction(){
-    $this->upload_dir = __DIR__.$this->upload_dir.$this->filename;
-    $file = fopen( $this->upload_dir , 'r' );
-    while (($line = fgetcsv($file, 89 , "," )) !== FALSE) {
-      foreach($line as $value){
-        echo sizeof( split( ",", $value) );
-          //list($cliente_id,$imss, $curp,  $rfc, $telefono_trabajo, $celular) =split( ",", $value);          
-          
-      }
-      echo "<pre>";print_r( $line );echo "</pre>";
-      die();
+  public function handlerData(){
+    $fileName = __DIR__.$this->upload_dir.$this->filename;
+    $fp = fopen( $fileName , 'r' );
+    $space = 0;
+    $data = array();
+    $data_arr = array();
+    $date_arr = array();
+    $twon = "";
+    $brand = "";
+    while($csv_line = fgetcsv($fp,2084,';')){
+      $space = 0;
+      foreach ($csv_line as $key => $value) {
+        if($value){
+          if($space==2 && $key >= 1){
+            $date_arr[] = $value;
+
+          }
+          elseif( $space==1 && $key >= 1 ){
+            if($key==1){
+              $brand = $value;
+            }
+            else{
+              $data_arr['value'] = $value;
+              $data_arr['town'] = $town;
+              $data_arr['brand'] = $brand;
+              $data_arr['date'] = $date_arr[$key-2];
+            }
+          }
+          elseif ( $space==0 && $key==0 ) {
+            $town = $value;
+          }
+          else{
+            
+          }
+        }
+        else{
+          $space++;
+        }
+        if(sizeof( $data_arr  )){
+          $data[] = $data_arr;
+        }
+      }  
     }
-    fclose($file);
-    
-   
+    return $data;    
+  }
+
+  public function setDataAction(){
+    $dataset = $this->handlerData();
+
+    foreach ($dataset as $key => $value) {
+      $measure = new Measure();
+      
+      $town = new Town();
+      $town->setName( $value['town'] );
+      $town->setDateupdated( new \DateTime(date('Y-m-d H:i:s')) );
+      $town->setDatecreated( new \DateTime(date('Y-m-d H:i:s')) );
+
+      $brand = new Brand();
+      $brand->setName( $value['brand'] );
+      $brand->setDescription( "  " );
+      $brand->setDateupdated( new \DateTime(date('Y-m-d H:i:s')) );
+
+      $measure->setValue( $value['value'] );
+      $measure->setDateupdated( new \DateTime(date('Y-m-d H:i:s')) );
+      $measure->setDatemeasure( $value['date'] );
+      $measure->setBrandbrand( $brand );
+      $measure->setTowntown( $town );
+
+      $em = $this->getDoctrine()->getManager();
+      $em->persist( $measure );
+      $em->persist( $measure->getBrandbrand() );
+      $em->persist( $measure->getTowntown() );
+      $em->flush();
+    }
+
+  }
+
+  public function readDataAction(){
+    $repository = $this->getDoctrine()
+    ->getRepository('AcmemarketBundle:Measure');
+    $products = $repository->findAll();
+    echo "<pre>";print_r( $products ); echo "</pre>";
     die();
+    return new Response('<html><body>Hello read !</body></html>');
+
+  }
+
+  public function updateDataAction(){
+
+    return new Response('<html><body>Hello update !</body></html>');
 
   }
 
   public function uploadFileAction()
   {
-    #return new Response('<html><body>Hello !</body></html>');
+
     $response = array();
     if(!empty($_FILES['file']['error'])){
       switch($_FILES['file']['error']){

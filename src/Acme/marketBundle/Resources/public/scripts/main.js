@@ -4,6 +4,7 @@ require.config({
     'underscore': 'vendor/underscore',
     'backbone': 'vendor/backbone',
     'ajaxfileupload': 'vendor/ajaxfileupload',
+    'highcharts': 'vendor/highcharts',
     'templates': '../templates'
   },
   shim: {
@@ -19,6 +20,9 @@ require.config({
         exports: '_'
     },
     'ajaxfileupload':{
+      deps: ['jquery']
+    },
+    'highcharts':{
       deps: ['jquery']
     }
   }

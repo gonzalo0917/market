@@ -1,17 +1,34 @@
 {% extends '::base.html.twig' %}
 {% block body -%}
-<div id="marketer-page">
-  <h1>Cargar Registros</h1>
-  <form>
-    <fieldset>
-    <legend>Legend</legend>
-      <label>Arcvhio CSV</label>
-      <input type="file" placeholder="Type something…"  id="file" name="file">        
-      <label class="checkbox"></label>
-      <ul class="breadcrumb">
-        <li><a href="javascript:void(0)" class="btn" id="marketer-btn-upload">Subir</a></li>
-        </ul>
-    </fieldset>
-  </form>
+<div id="marketer-page">  
+  <div class="container">
+    <div class="row">
+      <div class="span3">
+        <div class="well sidebar-nav">
+          <ul class="nav nav-list" id="marketer-menu">
+            <li class="nav-header">Menu</li>
+            <li><a href="javascript:void(0);" xaction="edit">Edit Brand</a></li>          
+            <li><a href="javascript:void(0);" xaction="chart">Chart</a></li>
+          </ul>
+        </div><!--/.well -->
+
+      </div>
+      <div class="span9 content" id="marketer-content">
+        <h1>Cargar Registros</h1>
+        <form>
+          <fieldset>
+          <legend>Legend</legend>
+            <label>Arcvhio CSV</label>
+            <input type="file" placeholder="Type something…"  id="file" name="file">        
+            <label class="checkbox"></label>
+            <ul class="breadcrumb">
+              <li><a href="javascript:void(0);" class="btn" id="marketer-btn-upload">Subir</a></li>
+              </ul>
+          </fieldset>
+        </form>
+      </div>
+    </div>
+    <hr />
+  </div>
 </div>
 {% endblock %}

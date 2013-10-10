@@ -17,14 +17,14 @@ class Measure
      *
      * @ORM\Column(name="idMeasure", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $idmeasure;
 
     /**
-     * @var \DateTime
+     * @var \string
      *
-     * @ORM\Column(name="dateMeasure", type="datetime", nullable=false)
+     * @ORM\Column(name="dateMeasure", type="string", length=255, nullable=false)
      */
     private $datemeasure;
 
@@ -97,7 +97,7 @@ class Measure
     /**
      * Set datemeasure
      *
-     * @param \DateTime $datemeasure
+     * @param string $datemeasure
      * @return Measure
      */
     public function setDatemeasure($datemeasure)
@@ -110,7 +110,7 @@ class Measure
     /**
      * Get datemeasure
      *
-     * @return \DateTime 
+     * @return string 
      */
     public function getDatemeasure()
     {
