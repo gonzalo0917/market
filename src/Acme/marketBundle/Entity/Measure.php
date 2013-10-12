@@ -52,7 +52,7 @@ class Measure
     /**
      * @var \Acme\marketBundle\Entity\Brand
      *
-     * @ORM\OneToOne(targetEntity="Acme\marketBundle\Entity\Brand")
+     * @ORM\ManyToOne(targetEntity="Acme\marketBundle\Entity\Brand", cascade={"all"}, fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="Brand_idBrand", referencedColumnName="idBrand")
      * })
@@ -62,7 +62,7 @@ class Measure
     /**
      * @var \Acme\marketBundle\Entity\Town
      *
-     * @ORM\OneToOne(targetEntity="Acme\marketBundle\Entity\Town")
+     * @ORM\ManyToOne(targetEntity="Acme\marketBundle\Entity\Town", cascade={"all"}, fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="Town_idTown", referencedColumnName="idTown")
      * })

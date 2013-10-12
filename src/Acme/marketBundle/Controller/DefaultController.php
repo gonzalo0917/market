@@ -96,39 +96,7 @@ class DefaultController extends Controller
     foreach ($date as $key => $value) {
       $response['output']['month'][] = $value;
     }
-    /*#$products = $this->getDoctrine()->getRepository('AcmemarketBundle:Measure')->findBytowntown($_REQUEST['idTown']);
-    $em = $this->getDoctrine()->getManager();
-    $query = $em->createQuery(
-      'SELECT m
-        FROM AcmemarketBundle:Measure m
-        WHERE m.towntown = :towntown
-         ORDER BY m.brandbrand ASC'
-    )->setParameter('towntown', $_REQUEST['idTown']);
-    $products = $query->getResult();
-    #$products = $this->getDoctrine()->getRepository('AcmemarketBundle:Measure')->findBy(
-      #array('towntown' => $_REQUEST['idTown']),
-      #array('datecreated' => 'ASC')
-    #);
-
-    foreach ($products as $key => $value) {
-      $date[] = $value->getDatemeasure();
-      if($brand!=$value->getBrandbrand()->getName()){
-        $brand = $value->getBrandbrand()->getName();       
-        if(sizeof($aux)){
-          $response['output']['measures'][] = $aux;
-          $aux = array();
-        } 
-
-      }    
-      $aux['name'] = $value->getBrandbrand()->getName();
-      $aux['data'][] = $value->getValue();     
-      $date = array_unique($date);
-    }
-
-    foreach ($date as $key => $value) {
-      $response['output']['month'][] = $value;
-    }*/
-    #die();
+    
     return new JsonResponse( $response );
 
   }
