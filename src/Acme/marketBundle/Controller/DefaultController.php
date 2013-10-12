@@ -17,19 +17,97 @@ class DefaultController extends Controller
 
   public function indexAction()
   {
-      return $this->render('AcmemarketBundle:Default:index.html.twig');
+    
+    return $this->render('AcmemarketBundle:Default:index.html.twig');
   }
   
+  public function readTownAction(){
+
+    $response =  array();
+    $town_repository = $this->getDoctrine()->getRepository('AcmemarketBundle:Town');
+    $towns = $town_repository->findAll();
+    foreach ($towns as $key => $value) {
+      $response[] = array( 'IdTown' => $value->getIdtown(), 'town' => $value->getName()   );
+    }
+    return new JsonResponse( $response );
+
+  }
+
+  public function updateBrandAction(){
+
+    $em = $this->getDoctrine()->getManager();
+    $Brand = $this->getDoctrine()->getRepository('AcmemarketBundle:Brand')->find($_REQUEST['idbrand']);
+    $Brand->setDescription( $_REQUEST['description'] );
+    $Brand->setDateupdated( new \DateTime(date('Y-m-d H:i:s')) );
+    $em->persist( $Brand );
+    $em->flush();
+
+    return new JsonResponse( array( 'status'=>'Success' ) );
+  }
+
+  public function readBrandAction(){
+
+    $response = array();
+    $repository = $this->getDoctrine()->getRepository('AcmemarketBundle:Brand');
+    $Brand = $repository->findAll();
+    foreach ($Brand as $key => $value) {
+      $response[] = array(
+        'idbrand'=> $value->getIdbrand(),
+        'brand' => $value->getName(),
+        'description' => $value->getDescription(),
+        'dateUpdated' => $value->getDateupdated(),
+        'dateCreated' => $value->getDatecreated()
+      );
+    }
+    return new JsonResponse( $response );
+  }
+
+  public function measureByTownAction(){
+
+    $response = array();
+    $aux = array();
+    $date = array();
+    $brand = "";
+    #$products = $this->getDoctrine()->getRepository('AcmemarketBundle:Measure')->findBytowntown($_REQUEST['idTown']);
+    $products = $this->getDoctrine()->getRepository('AcmemarketBundle:Measure')->findBy(
+      array('towntown' => $_REQUEST['idTown']),
+      array('datecreated' => 'ASC')
+    );
+
+    foreach ($products as $key => $value) {
+      $date[] = $value->getDatemeasure();
+      if($brand!=$value->getBrandbrand()->getName()){
+        $brand = $value->getBrandbrand()->getName();       
+        if(sizeof($aux)){
+          $response['output']['measures'][] = $aux;
+          $aux = array();
+        } 
+
+      }    
+      $aux['name'] = $value->getBrandbrand()->getName();
+      $aux['data'][] = $value->getValue();     
+      $date = array_unique($date);
+    }
+
+    foreach ($date as $key => $value) {
+      $response['output']['month'][] = $value;
+    }
+    return new JsonResponse( $response );
+
+  }
+
   public function handlerData(){
+    $data = array();
     $fileName = __DIR__.$this->upload_dir.$this->filename;
     $fp = fopen( $fileName , 'r' );
     $space = 0;
-    $data = array();
+    
     $data_arr = array();
     $date_arr = array();
     $twon = "";
     $brand = "";
-    while($csv_line = fgetcsv($fp,2084,';')){
+    while($csv_line = fgetcsv($fp,2084, ';')){
+
       $space = 0;
       foreach ($csv_line as $key => $value) {
         if($value){
@@ -68,22 +146,35 @@ class DefaultController extends Controller
 
   public function setDataAction(){
     $dataset = $this->handlerData();
-
+    $town_repository = $this->getDoctrine()->getRepository('AcmemarketBundle:Town');
+    $brand_repository = $this->getDoctrine()->getRepository('AcmemarketBundle:Brand');
+    
     foreach ($dataset as $key => $value) {
-      $measure = new Measure();
-      
-      $town = new Town();
-      $town->setName( $value['town'] );
-      $town->setDateupdated( new \DateTime(date('Y-m-d H:i:s')) );
-      $town->setDatecreated( new \DateTime(date('Y-m-d H:i:s')) );
 
-      $brand = new Brand();
-      $brand->setName( $value['brand'] );
-      $brand->setDescription( "  " );
-      $brand->setDateupdated( new \DateTime(date('Y-m-d H:i:s')) );
+
+
+      $town = $town_repository->findOneByName( $value['town'] );
+      if(!$town){
+        $town = new Town();
+        $town->setName( $value['town'] );
+        $town->setDateupdated( new \DateTime(date('Y-m-d H:i:s')) );
+        $town->setDatecreated( new \DateTime(date('Y-m-d H:i:s')) );
+      }      
+
+      $brand = $brand_repository->findOneByName( $value['brand'] );
+      if(!$brand){
+        $brand = new Brand();
+        $brand->setName( $value['brand'] );
+        $brand->setDescription( "  " );
+        $brand->setDateupdated( new \DateTime(date('Y-m-d H:i:s')) );
+        $brand->setDatecreated( new \DateTime(date('Y-m-d H:i:s')) );
+      }  
+      $measure = new Measure();
+            
 
       $measure->setValue( $value['value'] );
       $measure->setDateupdated( new \DateTime(date('Y-m-d H:i:s')) );
+      $measure->setDatecreated( new \DateTime(date('Y-m-d H:i:s')) );
       $measure->setDatemeasure( $value['date'] );
       $measure->setBrandbrand( $brand );
       $measure->setTowntown( $town );
@@ -93,17 +184,26 @@ class DefaultController extends Controller
       $em->persist( $measure->getBrandbrand() );
       $em->persist( $measure->getTowntown() );
       $em->flush();
-    }
 
+    }
+    return new Response('<html><body>Hello update !</body></html>');
   }
 
   public function readDataAction(){
-    $repository = $this->getDoctrine()
-    ->getRepository('AcmemarketBundle:Measure');
+
+    $response = array();
+    $repository = $this->getDoctrine()->getRepository('AcmemarketBundle:Measure');
     $products = $repository->findAll();
-    echo "<pre>";print_r( $products ); echo "</pre>";
-    die();
-    return new Response('<html><body>Hello read !</body></html>');
+    foreach ($products as $key => $value) {
+      $response[] = array(
+        'idmeasure'=> $value->getIdmeasure(),
+        'datemeasure' => $value->getDatemeasure(),
+        'value' => $value->getValue(),
+        'brand' => $value->getBrandbrand()->getName(),
+        'town' => $value->getTowntown()->getName()
+      );
+    }
+    return new JsonResponse( $response );
 
   }
 
@@ -157,13 +257,13 @@ class DefaultController extends Controller
     else{
       if (isset($_FILES['file'])){
         if ($_FILES['file']['error'] == UPLOAD_ERR_OK){
-          $this->upload_dir = __DIR__.$this->upload_dir.$this->filename;
-          move_uploaded_file($_FILES['file']['tmp_name'], $this->upload_dir);  
-          chmod( $this->upload_dir, 0777 );        
+          $fileName = __DIR__.$this->upload_dir.$this->filename;
+          move_uploaded_file($_FILES['file']['tmp_name'], $fileName);  
+          chmod( $fileName, 0777 );        
           $response ['FileName'] = $this->filename ;
-          $response ['FilePath'] = $this->upload_dir;
+          $response ['FilePath'] = $fileName;
           $response ['FileSize'] = $_FILES['file']['size'];
-          #$this->setData();
+          $this->setData();
         }
       }
       $response ['message']= 'El Archivo se subio correctamente.';

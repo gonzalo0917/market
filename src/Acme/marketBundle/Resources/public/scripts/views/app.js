@@ -4,9 +4,9 @@ define([
   'backbone',
   'ajaxfileupload',
   'views/chartView',
-  'text!templates/messageTemplate.html',
-  'text!templates/editTemplate.html'
-  ], function($, _, Backbone, ajaxfileupload, chartView, messageTemplate, editTemplate) {
+  'views/brandView',
+  'text!templates/messageTemplate.html'
+  ], function($, _, Backbone, ajaxfileupload, chartView, brandView, messageTemplate) {
 
   var App = Backbone.View.extend({
     existsFile:false,
@@ -38,9 +38,8 @@ define([
       this.$el.find('#marketer-menu li[class*=active]').removeClass('active');
       this.$el.find( e.currentTarget ).parent().addClass('active');
       switch( this.$el.find(e.currentTarget).attr('xaction') ){
-        case 'edit':
-          var compiledHtml = _.template( editTemplate );
-          this.$el.find('#marketer-content').html( compiledHtml );
+        case 'edit':          
+          new brandView();
           break;
         case 'chart':
           new chartView();

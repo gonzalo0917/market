@@ -1,4 +1,9 @@
 <h1>Chart</h1>
+<select id="marketer-options">
+	<% _.each(data, function( element ){%>
+		<option value="<%= element.IdTown  %>"><%= element.town %></option>
+	<% }); %>
+</select>
 <div class="row">
   <div class="span12">
     <div id="marketer-chart"></div>

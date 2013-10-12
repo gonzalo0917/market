@@ -4,12 +4,24 @@ acmemarket_homepage:
 acmemarket_uploadFile:
   pattern:  /home/upload
   defaults: { _controller: AcmemarketBundle:Default:uploadFile }
-acmemarket_setData:
-  pattern:  /home/setdata
-  defaults: { _controller: AcmemarketBundle:Default:setData }
 acmemarket_readData:
   pattern:  /home/read
   defaults: { _controller: AcmemarketBundle:Default:readDAta }
 acmemarket_updateData:
   pattern:  /home/update
   defaults: { _controller: AcmemarketBundle:Default:updateDAta }
+acmemarket_readTown:
+  pattern:  /home/town
+  defaults: { _controller: AcmemarketBundle:Default:readTown }
+acmemarket_measureByTown:
+  pattern:  /home/measure
+  defaults: { _controller: AcmemarketBundle:Default:measureByTown }
+acmemarket_setData:
+  pattern:  /home/setdata
+  defaults: { _controller: AcmemarketBundle:Default:setData }
+acmemarket_readBrand:
+  pattern:  /home/brand
+  defaults: { _controller: AcmemarketBundle:Default:readBrand }
+acmemarket_updateBrand:
+  pattern:  /home/brandUpdate
+  defaults: { _controller: AcmemarketBundle:Default:updateBrand }

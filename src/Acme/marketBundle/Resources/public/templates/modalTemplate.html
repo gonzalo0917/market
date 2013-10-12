@@ -1,0 +1,28 @@
+<div class="modal hide" id="marketer-tbl-modal-edit">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Edit</h3>
+  </div>
+  <div class="modal-body">
+    
+    <form class="form-horizontal">
+      <div class="control-group">
+        <label class="control-label" for="marketer-brand">Brand</label>
+        <div class="controls">
+          <input type="text" id="marketer-brand" placeholder="Brand" value="<%= ( data.brand?data.brand:'' ) %>">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label" for="marketer-description">Description</label>
+        <div class="controls">
+          <textarea id="marketer-description"><%= ( data.description?data.description:'' ) %></textarea>
+        </div>
+      </div>      
+    </form>
+
+  </div>
+  <div class="modal-footer">
+    <a href="javascript:void(0);" class="btn" id="close">Close</a>
+    <a href="javascript:void(0);" class="btn btn-primary" id="save">Save changes</a>
+  </div>
+</div>

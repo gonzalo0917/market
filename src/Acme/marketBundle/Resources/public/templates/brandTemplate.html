@@ -1,0 +1,23 @@
+<table class="table table-bordered" id="marketer-tbl">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Brand</th>
+      <th>Description</th>
+      <th>Date Updated</th>
+      <th>Date Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% _.each(data, function(element){%>
+    <tr id="<%= element.idbrand %>">
+      <td name="idbrand"><%= element.idbrand %></td>
+      <td name="brand"><%= element.brand %></td>
+      <td name="description"><%= element.description %></td>
+      <td name="dateUpdated"><%= element.dateUpdated.date %></td>
+      <td name="dateCreated"><%= element.dateCreated.date %></td>
+    </tr>
+    <% }); %>
+  </tbody>
+</table>
+<div id="marketer-tbl-modal"></div>
