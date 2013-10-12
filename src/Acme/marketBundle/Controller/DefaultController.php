@@ -68,11 +68,47 @@ class DefaultController extends Controller
     $aux = array();
     $date = array();
     $brand = "";
-    #$products = $this->getDoctrine()->getRepository('AcmemarketBundle:Measure')->findBytowntown($_REQUEST['idTown']);
-    $products = $this->getDoctrine()->getRepository('AcmemarketBundle:Measure')->findBy(
-      array('towntown' => $_REQUEST['idTown']),
-      array('datecreated' => 'ASC')
-    );
+    $brands = $this->getDoctrine()->getRepository('AcmemarketBundle:Brand')->findAll();
+    $em = $this->getDoctrine()->getManager();
+    foreach ($brands as $key => $value) {
+      
+      $query = $em->createQuery( 'SELECT m FROM AcmemarketBundle:Measure m
+        WHERE m.towntown = :towntown and m.brandbrand =:brandbrand ORDER BY m.brandbrand ASC'
+      )->setParameters(array(
+        'towntown' => $_REQUEST['idTown'],
+        'brandbrand'  => $value->getIdbrand(),
+      ));
+      $measures = $query->getResult();
+      $aux = array();
+      foreach ($measures as $key => $element) {
+
+        $date[] = $element->getDatemeasure();
+        $aux['name'] = $element->getBrandbrand()->getName();
+        $aux['data'][] = $element->getValue();     
+        $date = array_unique($date);
+
+      }
+      if(sizeof($aux)){
+        $response['output']['measures'][] = $aux;
+      } 
+
+    }
+    foreach ($date as $key => $value) {
+      $response['output']['month'][] = $value;
+    }
+    /*#$products = $this->getDoctrine()->getRepository('AcmemarketBundle:Measure')->findBytowntown($_REQUEST['idTown']);
+    $em = $this->getDoctrine()->getManager();
+    $query = $em->createQuery(
+      'SELECT m
+        FROM AcmemarketBundle:Measure m
+        WHERE m.towntown = :towntown
+         ORDER BY m.brandbrand ASC'
+    )->setParameter('towntown', $_REQUEST['idTown']);
+    $products = $query->getResult();
+    #$products = $this->getDoctrine()->getRepository('AcmemarketBundle:Measure')->findBy(
+      #array('towntown' => $_REQUEST['idTown']),
+      #array('datecreated' => 'ASC')
+    #);
 
     foreach ($products as $key => $value) {
       $date[] = $value->getDatemeasure();
@@ -91,7 +127,8 @@ class DefaultController extends Controller
 
     foreach ($date as $key => $value) {
       $response['output']['month'][] = $value;
-    }
+    }*/
+    #die();
     return new JsonResponse( $response );
 
   }
@@ -109,9 +146,11 @@ class DefaultController extends Controller
     while($csv_line = fgetcsv($fp,2084, ';')){
 
       $space = 0;
+      $data_arr = array();
       foreach ($csv_line as $key => $value) {
         if($value){
-          if($space==2 && $key >= 1){
+
+          if($space==2 && $key >= 2){
             $date_arr[] = $value;
 
           }
@@ -125,6 +164,19 @@ class DefaultController extends Controller
               $data_arr['brand'] = $brand;
               $data_arr['date'] = $date_arr[$key-2];
             }
+
+          }
+          elseif( $space==0 && $key>=1 ){
+           if($key==1){
+              $brand = $value;
+            }
+            else{
+              $data_arr['value'] = $value;
+              $data_arr['town'] = $town;
+              $data_arr['brand'] = $brand;
+              $data_arr['date'] = $date_arr[$key-2];
+            }
+            
           }
           elseif ( $space==0 && $key==0 ) {
             $town = $value;
@@ -132,20 +184,23 @@ class DefaultController extends Controller
           else{
             
           }
+
         }
         else{
           $space++;
-        }
+        }  
         if(sizeof( $data_arr  )){
-          $data[] = $data_arr;
-        }
-      }  
+        $data[] = $data_arr;
+      }      
+      }
+        
     }
     return $data;    
   }
 
-  public function setDataAction(){
+  public function setData(){
     $dataset = $this->handlerData();
+    
     $town_repository = $this->getDoctrine()->getRepository('AcmemarketBundle:Town');
     $brand_repository = $this->getDoctrine()->getRepository('AcmemarketBundle:Brand');
     

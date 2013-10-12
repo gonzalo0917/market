@@ -54,7 +54,7 @@ class Measure
      *
      * @ORM\OneToOne(targetEntity="Acme\marketBundle\Entity\Brand")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Brand_idBrand", referencedColumnName="idBrand", unique=true)
+     *   @ORM\JoinColumn(name="Brand_idBrand", referencedColumnName="idBrand")
      * })
      */
     private $brandbrand;
@@ -64,7 +64,7 @@ class Measure
      *
      * @ORM\OneToOne(targetEntity="Acme\marketBundle\Entity\Town")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Town_idTown", referencedColumnName="idTown", unique=true)
+     *   @ORM\JoinColumn(name="Town_idTown", referencedColumnName="idTown")
      * })
      */
     private $towntown;

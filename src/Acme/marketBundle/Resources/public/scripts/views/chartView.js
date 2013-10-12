@@ -33,7 +33,9 @@ define([
     render: function( data ){
 
       var compiledHtml = _.template( chartTemplate, { data:data });
-      this.$el.html( compiledHtml );      
+      this.$el.html( compiledHtml );  
+      this.$el.find('#marketer-options').change();
+
     },
     changeTwon: function(e){
       this.getMeasure( this.$el.find( '#marketer-options option:selected' ).val() );
